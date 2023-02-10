@@ -176,7 +176,7 @@ async function createCsvHawb(data) {
       "Volume Unit": e["volume unit"],
     }));
   const csvHawb = parse(formatedHawb, optsHawb);
-  const filename = `omni-tac-index-hawb-${moment().format("DD-MM-YYYY")}.csv`;
+  const filename = `hawb-${moment().format("YYYY-MM-DD")}.csv`;
   return { csvHawb, filenameHawb: filename };
 }
 
@@ -225,7 +225,7 @@ async function createCsvMawb(data) {
     }));
   console.log("formatedMawb", formatedMawb.length);
   const csvMawb = parse(formatedMawb, optsMawb);
-  const filename = `omni-tac-index-mawb-${moment().format("DD-MM-YYYY")}.csv`;
+  const filename = `mawb-${moment().format("YYYY-MM-DD")}.csv`;
   return { csvMawb, filenameMawb: filename };
 }
 
