@@ -1,0 +1,23 @@
+---
+function:
+  name: omni-tac-index-trigger-test-${self:provider.stage}
+  handler: src/tacIndexTriggerTest.handler
+  timeout: 30
+  vpc:
+    securityGroupIds:
+      - ${ssm:/omni-default/${self:provider.stage}/sgId}
+    subnetIds:
+      - ${ssm:/omni-default/${self:provider.stage}/subnetA}
+      - ${ssm:/omni-default/${self:provider.stage}/subnetB}
+  layers:
+    - { Ref: OmniTacIndexLayerLambdaLayer }
+  package:
+    patterns:
+      - "!**/*"
+      - "src/tacIndexTriggerTest.js"
+  events:
+    - http:
+        path: testTac
+        method: post
+        cors: true
+        private: false
