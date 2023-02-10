@@ -98,7 +98,7 @@ async function getTacData() {
               when d.total > 0 then d.total
               else c.total
           end "Total Cost to Airline",
-          '' as "Total Fuel Surcharge ",
+          '' as "Total Fuel Surcharge",
           '' as "Total Security Surcharge"
       from
         ${DB}tbl_airwaybill a
