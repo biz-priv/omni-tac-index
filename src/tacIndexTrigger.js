@@ -67,7 +67,6 @@ module.exports.handler = async (event, context, callback) => {
       },
     };
     console.log("params", params);
-    return JSON.stringify(params);
 
     const batchData = await submitBatchJob(params);
 
