@@ -12,33 +12,31 @@ const {
   TAC_FILE_UPLOAD,
   TAC_AUTH_USERNAME,
   TAC_AUTH_PASSWORD,
-  isFullLoad = false,
+  isFullLoad = "false",
+  USER,
+  PASS,
+  HOST,
+  PORT,
+  DBNAME,
 } = process.env;
+
 module.exports.handler = async (event, context, callback) => {
   try {
-    console.log(
-      TAC_AUTH_URL,
-      TAC_FILE_UPLOAD,
-      TAC_AUTH_USERNAME,
-      TAC_AUTH_PASSWORD
-    );
     connections = dbc(getConnection());
 
     const data = await getTacData();
-    console.log("data", data.length, data[0]);
+    console.log("DB data", data.length);
 
     const { csvMawb, filenameMawb } = await createCsvMawb(data);
-    console.log("filenameMawb", filenameMawb);
     await updateDataToTac(csvMawb, filenameMawb);
 
     const { csvHawb, filenameHawb } = await createCsvHawb(data);
-    console.log("filenameHawb", filenameHawb);
     await updateDataToTac(csvHawb, filenameHawb);
 
-    return "success";
+    return true;
   } catch (error) {
     console.error("Error while processing data", error);
-    return "failed";
+    return false;
   }
 };
 
@@ -49,12 +47,12 @@ module.exports.handler = async (event, context, callback) => {
  */
 function getConnection() {
   try {
-    const dbUser = process.env.USER;
-    const dbPassword = process.env.PASS;
-    // const dbHost = process.env.HOST;
-    const dbHost = "omni-dw-prod.cnimhrgrtodg.us-east-1.redshift.amazonaws.com";
-    const dbPort = process.env.PORT;
-    const dbName = process.env.DBNAME;
+    const dbUser = USER;
+    const dbPassword = PASS;
+    const dbHost = HOST;
+    // const dbHost = "omni-dw-prod.cnimhrgrtodg.us-east-1.redshift.amazonaws.com";
+    const dbPort = PORT;
+    const dbName = DBNAME;
 
     const connectionString = `postgres://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`;
     console.log("connectionString", connectionString);
@@ -72,7 +70,8 @@ async function getTacData() {
   try {
     // "Total Fuel Surcharge ", // previously it having one space remove it
     const DB = process.env.STAGE === "dev" ? "dbo." : "dbc.";
-    const pickDataFrom = isFullLoad ? " 2021-01-01 " : " current_date - 45 ";
+    const pickDataFrom =
+      isFullLoad === "true" ? " 2021-01-01 " : " current_date - 45 ";
 
     const query = `select
           a.fk_orderno FIle_Nbr,
@@ -94,7 +93,7 @@ async function getTacData() {
               when d.total > 0 then d.total
               else c.total
           end "Total Cost to Airline",
-          '' as "Total Fuel Surcharge ",
+          '' as "Total Fuel Surcharge",
           '' as "Total Security Surcharge"
       from
         ${DB}tbl_airwaybill a
@@ -223,7 +222,6 @@ async function createCsvMawb(data) {
       "total fuel surcharge": e["total fuel surcharge"],
       "total security surcharge": e["total security surcharge"],
     }));
-  console.log("formatedMawb", formatedMawb.length);
   const csvMawb = parse(formatedMawb, optsMawb);
   const filename = `mawb-${moment().format("YYYY-MM-DD")}.csv`;
   return { csvMawb, filenameMawb: filename };
