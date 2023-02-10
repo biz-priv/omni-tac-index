@@ -11,13 +11,13 @@ module.exports.handler = async (event, context, callback) => {
 
     const params = {
       jobDefinition: "omni-tac-index-job-definition-" + STAGE,
-      jobName: "omni-tac-index" + STAGE,
+      jobName: "omni-tac-index-" + STAGE,
       jobQueue: "omni-tac-index-job-queue-" + STAGE,
       containerOverrides: {
         environment: [
           {
             name: "isFullLoad",
-            value: data?.isFullLoad ?? false,
+            value: data?.isFullLoad ?? "false",
           },
           {
             name: "TAC_AUTH_URL",
