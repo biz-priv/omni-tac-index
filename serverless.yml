@@ -25,20 +25,6 @@ provider:
         - "batch:List*"
         - "batch:SubmitJob"
       Resource: "*"
-    - Effect: Allow
-      Action:
-        - s3:GetObject
-        - s3:ListBucket
-        - s3:PutObject
-      Resource:
-        # - ${ssm:/omni-tac-index/${self:provider.stage}/s3.omni_tac_index_arn~true}
-        # - ${ssm:/omni-tac-index/${self:provider.stage}/s3.omni_tac_index_arn~true}/*
-        - arn:aws:s3:::omni-tac-index-dev
-        - arn:aws:s3:::omni-tac-index-dev/*
-    # - Effect: "Allow"
-    #   Action:
-    #     - "SNS:Publish"
-    #   Resource: "*"
   # timeout: 30
   # vpc:
   #   securityGroupIds:
