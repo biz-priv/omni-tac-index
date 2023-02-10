@@ -14,7 +14,7 @@ const {
   TAC_FILE_UPLOAD,
   TAC_AUTH_USERNAME,
   TAC_AUTH_PASSWORD,
-  isFullLoad = false,
+  isFullLoad = "false",
   USER,
   PASS,
   HOST,
@@ -28,7 +28,7 @@ async function listBucketJsonFiles() {
     connections = dbc(getConnection());
 
     const data = await getTacData();
-    console.log("data", data.length, data[0]);
+    console.log("data", data.length);
 
     const { csvMawb, filenameMawb } = await createCsvMawb(data);
     console.log("filenameMawb", filenameMawb);
@@ -75,7 +75,8 @@ async function getTacData() {
   try {
     // "Total Fuel Surcharge ", // previously it having one space remove it
     const DB = process.env.STAGE === "dev" ? "dbo." : "dbc.";
-    const pickDataFrom = isFullLoad ? " 2021-01-01 " : " current_date - 45 ";
+    const pickDataFrom =
+      isFullLoad === "true" ? " 2021-01-01 " : " current_date - 45 ";
 
     const query = `select
           a.fk_orderno FIle_Nbr,
