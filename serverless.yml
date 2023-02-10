@@ -1,0 +1,87 @@
+service: omni-tac-index
+
+provider:
+  name: aws
+  region: ${opt:region, 'us-east-1'}
+  stage: ${opt:stage, 'dev'}
+  versionFunctions: false
+  tags: ${self:custom.tags}
+  stackTags: ${self:custom.tags}
+  iamRoleStatements: # default vpc lambda permissions
+    - Effect: "Allow"
+      Action:
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:PutLogEvents"
+        - "ec2:CreateNetworkInterface"
+        - "ec2:DescribeNetworkInterfaces"
+        - "ec2:DeleteNetworkInterface"
+        - "ec2:AssignPrivateIpAddresses"
+        - "ec2:UnassignPrivateIpAddresses"
+      Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "batch:Describe*"
+        - "batch:List*"
+        - "batch:SubmitJob"
+      Resource: "*"
+  # timeout: 30
+  # vpc:
+  #   securityGroupIds:
+  #     - ${ssm:/omni-default/${self:provider.stage}/sgId}
+  #   subnetIds:
+  #     - ${ssm:/omni-default/${self:provider.stage}/subnetA}
+  #     - ${ssm:/omni-default/${self:provider.stage}/subnetB}
+  # runtime: nodejs14.x
+  environment:
+    REGION: ${self:custom.region}
+    STAGE: ${opt:stage, 'dev'}
+    DBNAME: ${ssm:/omni-tac-index/${self:provider.stage}/db/name}
+    USER: ${ssm:/omni-dw/${self:provider.stage}/db/user~true}
+    HOST: ${ssm:/omni-dw/${self:provider.stage}/db/host~true}
+    PASS: ${ssm:/omni-dw/${self:provider.stage}/db/password~true}
+    PORT: ${ssm:/omni-dw/${self:provider.stage}/db/port}
+    TAC_AUTH_URL: ${ssm:/omni-tac-index/${self:provider.stage}/auth/url}
+    TAC_FILE_UPLOAD: ${ssm:/omni-tac-index/${self:provider.stage}/fileUpload/url}
+    TAC_AUTH_USERNAME: ${ssm:/omni-tac-index/${self:provider.stage}/username}
+    TAC_AUTH_PASSWORD: ${ssm:/omni-tac-index/${self:provider.stage}/password}
+  deploymentBucket:
+    name: ${ssm:/omni-dw/${self:provider.stage}/sls/deployment/bucket}
+    serverSideEncryption: AES256
+
+custom:
+  region: ${opt:region, 'us-east-1'}
+  stage: ${opt:stage, 'dev'}
+  tags:
+    Application: OmniTacIndex
+    CreateBy: BizCloudExperts
+    Environment: ${self:custom.stage}
+
+plugins:
+  - serverless-offline
+
+package:
+  individually: true
+
+layers:
+  OmniTacIndexLayer:
+    path: lambdaLayer/lib
+    name: ${self:service}-layer-${self:provider.stage}
+    description: Omni Tac Index lambda layer for all node modules - ${self:provider.stage}
+    compatibleRuntimes:
+      - nodejs14.x
+    retain: false
+
+functions:
+  tacIndexTrigger: ${file(config/functions/tacIndexTrigger.yml):function}
+  # tacIndexTriggerTest: ${file(config/functions/tacIndexTriggerTest.yml):function} #for testing
+
+resources:
+  Resources:
+    # Omni Tac Index batch
+    OmniTacIndexBatchServiceRole: ${file(config/batch/computeEnvironment.yml):OmniTacIndexBatchServiceRole}
+    OmniTacIndexComputeEnvironment: ${file(config/batch/computeEnvironment.yml):OmniTacIndexComputeEnvironment}
+    OmniTacIndexJobQueue: ${file(config/batch/OmniTacIndexJobQueue.yml):OmniTacIndexJobQueue}
+    OmniTacIndexBatchTaskExecutionRole: ${file(config/batch/OmniTacIndexJob.yml):OmniTacIndexBatchTaskExecutionRole}
+    OmniTacIndexJobDefinition: ${file(config/batch/OmniTacIndexJob.yml):OmniTacIndexJobDefinition}
+    OmniTacIndexBatchLogGroup: ${file(config/batch/OmniTacIndexJob.yml):OmniTacIndexBatchLogGroup}
