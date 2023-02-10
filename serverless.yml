@@ -81,7 +81,7 @@ resources:
     # Omni Tac Index batch
     OmniTacIndexBatchServiceRole: ${file(config/batch/computeEnvironment.yml):OmniTacIndexBatchServiceRole}
     OmniTacIndexComputeEnvironment: ${file(config/batch/computeEnvironment.yml):OmniTacIndexComputeEnvironment}
-    OmniTacIndexJobQueue: ${file(config/batch/OmniTacIndexJobQueue.yml):OmniTacIndexJobQueue}
-    OmniTacIndexBatchTaskExecutionRole: ${file(config/batch/OmniTacIndexJob.yml):OmniTacIndexBatchTaskExecutionRole}
-    OmniTacIndexJobDefinition: ${file(config/batch/OmniTacIndexJob.yml):OmniTacIndexJobDefinition}
-    OmniTacIndexBatchLogGroup: ${file(config/batch/OmniTacIndexJob.yml):OmniTacIndexBatchLogGroup}
+    OmniTacIndexJobQueue: ${file(config/batch/omniTacIndexJobQueue.yml):OmniTacIndexJobQueue}
+    OmniTacIndexBatchTaskExecutionRole: ${file(config/batch/omniTacIndexJob.yml):OmniTacIndexBatchTaskExecutionRole}
+    OmniTacIndexJobDefinition: ${file(config/batch/omniTacIndexJob.yml):OmniTacIndexJobDefinition}
+    OmniTacIndexBatchLogGroup: ${file(config/batch/omniTacIndexJob.yml):OmniTacIndexBatchLogGroup}
