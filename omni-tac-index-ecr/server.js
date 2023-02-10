@@ -28,14 +28,12 @@ async function listBucketJsonFiles() {
     connections = dbc(getConnection());
 
     const data = await getTacData();
-    console.log("data", data.length);
+    console.log("DB data", data.length);
 
     const { csvMawb, filenameMawb } = await createCsvMawb(data);
-    console.log("filenameMawb", filenameMawb);
     await updateDataToTac(csvMawb, filenameMawb);
 
     const { csvHawb, filenameHawb } = await createCsvHawb(data);
-    console.log("filenameHawb", filenameHawb);
     await updateDataToTac(csvHawb, filenameHawb);
 
     return true;
@@ -227,7 +225,6 @@ async function createCsvMawb(data) {
       "total fuel surcharge": e["total fuel surcharge"],
       "total security surcharge": e["total security surcharge"],
     }));
-  console.log("formatedMawb", formatedMawb.length);
   const csvMawb = parse(formatedMawb, optsMawb);
   const filename = `mawb-${moment().format("YYYY-MM-DD")}.csv`;
   return { csvMawb, filenameMawb: filename };
