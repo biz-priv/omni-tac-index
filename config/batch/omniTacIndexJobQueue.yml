@@ -1,0 +1,10 @@
+OmniTacIndexJobQueue:
+  Type: AWS::Batch::JobQueue
+  Properties:
+    JobQueueName: omni-tac-index-job-queue-${self:provider.stage}
+    ComputeEnvironmentOrder:
+      - Order: 1
+        ComputeEnvironment:
+          Ref: OmniTacIndexComputeEnvironment
+    State: ENABLED
+    Priority: 1

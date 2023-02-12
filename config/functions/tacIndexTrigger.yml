@@ -1,0 +1,26 @@
+---
+function:
+  name: omni-tac-index-trigger-${self:provider.stage}
+  handler: src/tacIndexTrigger.handler
+  timeout: 30
+  runtime: nodejs14.x
+  vpc:
+    securityGroupIds:
+      - ${ssm:/omni-default/${self:provider.stage}/sgId}
+    subnetIds:
+      - ${ssm:/omni-default/${self:provider.stage}/subnetA}
+      - ${ssm:/omni-default/${self:provider.stage}/subnetB}
+  layers:
+    - { Ref: OmniTacIndexLayerLambdaLayer }
+  package:
+    patterns:
+      - "!**/*"
+      - "src/tacIndexTrigger.js"
+  events:
+    - schedule:
+        rate: cron(0 15 * * ? *) # GMT:- 3:00 pm / CST:- 10:00 am / IST:- 8:30 am
+    # - http:
+    #     path: tacIndexTrigger
+    #     method: post
+    #     cors: true
+    #     private: false
