@@ -7,7 +7,7 @@ module.exports.handler = async (event, context, callback) => {
   try {
     console.info("Event from fullLoadBatchTrigger", event);
 
-    let data = JSON.parse(event.body);
+    let data = event?.body ? JSON.parse(event.body) : {};
 
     const params = {
       jobDefinition: "omni-tac-index-job-definition-" + STAGE,
