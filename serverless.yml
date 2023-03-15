@@ -7,6 +7,11 @@ provider:
   versionFunctions: false
   tags: ${self:custom.tags}
   stackTags: ${self:custom.tags}
+  vpc:
+    securityGroupIds:
+      - ${ssm:/omni-dw/${self:provider.stage}/lambda/sgId}
+    subnetIds:
+      - ${ssm:/omni-dw/${self:provider.stage}/lambda/subnetA}
   iamRoleStatements: # default vpc lambda permissions
     - Effect: "Allow"
       Action:
