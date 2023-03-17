@@ -284,7 +284,9 @@ function tacAuth() {
 function updateDataToTac(csvData, filename) {
   return new Promise(async (resolve, reject) => {
     try {
-      await tacAuth();
+      if (process.env.STAGE.toLowerCase() === "dev") {
+        await tacAuth();
+      }
       let data = new FormData();
       data.append("file1", csvData, filename);
       const config = {
