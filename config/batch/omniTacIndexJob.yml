@@ -22,7 +22,17 @@ OmniTacIndexBatchTaskExecutionRole:
                 - "logs:CreateLogStream"
                 - "logs:PutLogEvents"
               Resource: "*"
-
+      - PolicyName: omni-tac-index-ecs-task-s3-get-policy
+        PolicyDocument:
+          Statement:
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:ListBucket
+                - s3:PutObject
+              Resource:
+                - ${ssm:/omni-tac-index/${self:provider.stage}/s3.logBucket}
+                - ${ssm:/omni-tac-index/${self:provider.stage}/s3.logBucket}/*
 OmniTacIndexJobDefinition:
   Type: AWS::Batch::JobDefinition
   Properties:
