@@ -36,6 +36,10 @@ module.exports.handler = async (event, context, callback) => {
             value: process.env.TAC_AUTH_PASSWORD,
           },
           {
+            name: "TAC_LOG_BUCKET",
+            value: process.env.TAC_LOG_BUCKET,
+          },
+          {
             name: "USER",
             value: process.env.USER,
           },

@@ -48,8 +48,9 @@ provider:
     PORT: ${ssm:/omni-dw/${self:provider.stage}/db/port}
     TAC_AUTH_URL: ${ssm:/omni-tac-index/${self:provider.stage}/auth/url}
     TAC_FILE_UPLOAD: ${ssm:/omni-tac-index/${self:provider.stage}/fileUpload/url}
-    TAC_AUTH_USERNAME: ${ssm:/omni-tac-index/${self:provider.stage}/username} # TODO - check with will for username and password to use for TAC Prod Auth
-    TAC_AUTH_PASSWORD: ${ssm:/omni-tac-index/${self:provider.stage}/password} # TODO - check with will for username and password to use for TAC Prod Auth
+    TAC_AUTH_USERNAME: ${ssm:/omni-tac-index/${self:provider.stage}/username}
+    TAC_AUTH_PASSWORD: ${ssm:/omni-tac-index/${self:provider.stage}/password}
+    TAC_LOG_BUCKET: ${ssm:/omni-tac-index/${self:provider.stage}/s3.logBucket}
   deploymentBucket:
     name: ${ssm:/omni-dw/${self:provider.stage}/sls/deployment/bucket}
     serverSideEncryption: AES256

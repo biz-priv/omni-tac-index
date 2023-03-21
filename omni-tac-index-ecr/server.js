@@ -7,6 +7,7 @@ const moment = require("moment");
 const { parse } = require("json2csv");
 var FormData = require("form-data");
 AWS.config.update({ region: process.env.REGION });
+const S3 = new AWS.S3();
 
 let connections = "";
 const {
@@ -14,6 +15,7 @@ const {
   TAC_FILE_UPLOAD,
   TAC_AUTH_USERNAME,
   TAC_AUTH_PASSWORD,
+  TAC_LOG_BUCKET,
   isFullLoad = "false",
   USER,
   PASS,
@@ -31,10 +33,10 @@ async function listBucketJsonFiles() {
     console.log("DB data", data.length);
 
     const { csvMawb, filenameMawb } = await createCsvMawb(data);
-    await updateDataToTac(csvMawb, filenameMawb);
+    await updateDataToTac(csvMawb, filenameMawb, "mawb");
 
     const { csvHawb, filenameHawb } = await createCsvHawb(data);
-    await updateDataToTac(csvHawb, filenameHawb);
+    await updateDataToTac(csvHawb, filenameHawb, "hawb");
 
     return true;
   } catch (error) {
@@ -282,7 +284,7 @@ function tacAuth() {
   });
 }
 
-function updateDataToTac(csvData, filename) {
+function updateDataToTac(csvData, filename, type) {
   return new Promise(async (resolve, reject) => {
     try {
       if (process.env.STAGE.toLowerCase() === "dev") {
@@ -307,8 +309,9 @@ function updateDataToTac(csvData, filename) {
       };
 
       axios(config)
-        .then(function (response) {
+        .then(async (response) => {
           console.log(JSON.stringify(response.data));
+          await uploadFileToS3(csvData, filename, type);
           resolve(response.data);
         })
         .catch(function (error) {
@@ -320,4 +323,18 @@ function updateDataToTac(csvData, filename) {
       reject(error);
     }
   });
+}
+
+async function uploadFileToS3(csvData, filename, type = "other") {
+  try {
+    const params = {
+      Bucket: TAC_LOG_BUCKET + "/" + type,
+      Key: filename,
+      Body: csvData,
+      ContentType: "application/octet-stream",
+    };
+    await S3.putObject(params).promise();
+  } catch (error) {
+    console.log("error", error);
+  }
 }
