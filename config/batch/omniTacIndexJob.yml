@@ -31,8 +31,8 @@ OmniTacIndexBatchTaskExecutionRole:
                 - s3:ListBucket
                 - s3:PutObject
               Resource:
-                - ${ssm:/omni-tac-index/${self:provider.stage}/s3.logBucket}
-                - ${ssm:/omni-tac-index/${self:provider.stage}/s3.logBucket}/*
+                - ${ssm:/omni-tac-index/${self:provider.stage}/s3.logBucket.arn}
+                - ${ssm:/omni-tac-index/${self:provider.stage}/s3.logBucket.arn}/*
 OmniTacIndexJobDefinition:
   Type: AWS::Batch::JobDefinition
   Properties:
