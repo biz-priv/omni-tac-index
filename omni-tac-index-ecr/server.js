@@ -77,6 +77,7 @@ async function getTacData() {
 
     const query = `select 
         MAWB,
+        housebill as "HAWB",
         CAST("Date" AS DATE) "Date",
         Origin,
         Destination,
@@ -173,7 +174,7 @@ async function getTacData() {
  */
 async function createCsvHawb(data) {
   const fieldsHawb = [
-    "HAWB Number", //req housebill
+    "HAWB Number", //req hawb
     "MAWB Number", //req mawb
     "Date", //req date
     "Origin", //req origin
@@ -189,7 +190,7 @@ async function createCsvHawb(data) {
   const formatedHawb = data
     .filter((e) => e.mawb.length > 0)
     .map((e) => ({
-      "HAWB Number": e["housebill"],
+      "HAWB Number": e["hawb"],
       "MAWB Number": e["mawb"],
       Date: moment(e["date"]).format("YYYY-MM-DD"),
       Origin: e["origin"],
