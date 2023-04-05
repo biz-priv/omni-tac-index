@@ -81,7 +81,7 @@ layers:
 
 functions:
   tacIndexTrigger: ${file(config/functions/tacIndexTrigger.yml):function}
-  tacIndexTriggerTest: ${file(config/functions/tacIndexTriggerTest.yml):function} #for testing
+  # tacIndexTriggerTest: ${file(config/functions/tacIndexTriggerTest.yml):function} #for testing
 
 resources:
   Resources:
