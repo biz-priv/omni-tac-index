@@ -8,6 +8,7 @@ const { parse } = require("json2csv");
 var FormData = require("form-data");
 AWS.config.update({ region: process.env.REGION });
 const S3 = new AWS.S3();
+const { getConnection } = require("./shared/index")
 
 let connections = "";
 const {
@@ -17,10 +18,6 @@ const {
   TAC_AUTH_PASSWORD,
   TAC_LOG_BUCKET,
   isFullLoad = "false",
-  USER,
-  PASS,
-  HOST,
-  PORT,
   DBNAME,
   CW_DBNAME
 } = process.env;
@@ -28,7 +25,8 @@ const {
 listBucketJsonFiles();
 async function listBucketJsonFiles() {
   try {
-    connections = dbc(getConnection());
+    const wt_dbName = DBNAME;
+    connections = dbc(getConnection(wt_dbName));
 
     const data = await getTacData();
     console.log("DB data", data.length);
@@ -39,7 +37,8 @@ async function listBucketJsonFiles() {
     const { csvHawb, filenameHawb } = await createCsvHawb(data);
     await updateDataToTac(csvHawb, filenameHawb, "hawb");
 
-    connections = dbc(getConnectionToCw());
+    const cw_dbName = CW_DBNAME;
+    connections = dbc(getConnection(cw_dbName));
 
     const cwData = await getTacDataFromCW();
     console.log("DB data", cwData.length);
@@ -57,27 +56,6 @@ async function listBucketJsonFiles() {
   }
 }
 
-/**
- * Config for connections
- * @param {*} env
- * @returns
- */
-function getConnection() {
-  try {
-    const dbUser = USER;
-    const dbPassword = PASS;
-    const dbHost = HOST;
-    //const dbHost = "omni-dw-prod.cnimhrgrtodg.us-east-1.redshift.amazonaws.com";
-    const dbPort = PORT;
-    const dbName = DBNAME;
-
-    const connectionString = `postgres://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`;
-    console.log("connectionString", connectionString);
-    return connectionString;
-  } catch (error) {
-    throw "DB Connection Error";
-  }
-}
 
 /**
  * fetch tac data from redshift
@@ -269,27 +247,6 @@ async function createCsvMawb(data) {
   return { csvMawb, filenameMawb: filename };
 }
 
-/**
- * Config for connections
- * @param {*} env
- * @returns
- */
-function getConnectionToCw() {
-  try {
-    const dbUser = USER;
-    const dbPassword = PASS;
-    const dbHost = HOST;
-    //const dbHost = "omni-dw-prod.cnimhrgrtodg.us-east-1.redshift.amazonaws.com";
-    const dbPort = PORT;
-    const dbName = CW_DBNAME;
-
-    const connectionString = `postgres://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`;
-    console.log("connectionString", connectionString);
-    return connectionString;
-  } catch (error) {
-    throw "DB Connection Error";
-  }
-}
 
 /**
  * fetch tac data from redshift

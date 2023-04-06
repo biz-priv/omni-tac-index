@@ -7,6 +7,7 @@ const { parse } = require("json2csv");
 var FormData = require("form-data");
 AWS.config.update({ region: process.env.REGION });
 const S3 = new AWS.S3();
+const { getConnection } = require("../omni-tac-index-ecr/shared/index")
 
 let connections = "";
 const {
@@ -16,40 +17,38 @@ const {
   TAC_AUTH_PASSWORD,
   TAC_LOG_BUCKET,
   isFullLoad = "false",
-  USER,
-  PASS,
-  HOST,
-  PORT,
   DBNAME,
   CW_DBNAME
 } = process.env;
 
 module.exports.handler = async (event, context, callback) => {
   try {
-    connections = dbc(getConnection());
+    const wt_dbName = DBNAME;
+    connections = dbc(getConnection(wt_dbName));
 
     const data = await getTacData();
     console.log("DB data", data.length);
 
     const { csvMawb, filenameMawb } = await createCsvMawb(data);
-    console.log("csvMawb",csvMawb.length,filenameMawb)
+    console.log("csvMawb", csvMawb.length, filenameMawb)
     await updateDataToTac(csvMawb, filenameMawb, "mawb");
 
     const { csvHawb, filenameHawb } = await createCsvHawb(data);
-    console.log("csvHawb",csvHawb.length,filenameHawb)
+    console.log("csvHawb", csvHawb.length, filenameHawb)
     await updateDataToTac(csvHawb, filenameHawb, "hawb");
 
-    connections = dbc(getConnectionToCw());
+    const cw_dbName = CW_DBNAME;
+    connections = dbc(getConnection(cw_dbName));
 
     const cwData = await getTacDataFromCW();
     console.log("DB data", cwData.length);
 
     const { csvCwMawb, filenameCwMawb } = await createCwCsvMawb(cwData);
-    console.log("csvCwMawb",csvCwMawb.length,filenameCwMawb)
+    console.log("csvCwMawb", csvCwMawb.length, filenameCwMawb)
     await updateDataToTac(csvCwMawb, filenameCwMawb, "cwmawb");
 
     const { csvCwHawb, filenameCwHawb } = await createCwCsvHawb(cwData);
-    console.log("csvCwHawb",csvCwHawb.length,filenameCwHawb)
+    console.log("csvCwHawb", csvCwHawb.length, filenameCwHawb)
     await updateDataToTac(csvCwHawb, filenameCwHawb, "cwhawb");
 
     return true;
@@ -59,27 +58,7 @@ module.exports.handler = async (event, context, callback) => {
   }
 };
 
-/**
- * Config for connections
- * @param {*} env
- * @returns
- */
-function getConnection() {
-  try {
-    const dbUser = USER;
-    const dbPassword = PASS;
-    //const dbHost = HOST;
-     const dbHost = "omni-dw-prod.cnimhrgrtodg.us-east-1.redshift.amazonaws.com";
-    const dbPort = PORT;
-    const dbName = DBNAME;
 
-    const connectionString = `postgres://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`;
-    console.log("connectionString", connectionString);
-    return connectionString;
-  } catch (error) {
-    throw "DB Connection Error";
-  }
-}
 
 /**
  * fetch tac data from redshift
@@ -182,29 +161,6 @@ async function getTacData() {
   }
 }
 
-
-
-/**
- * Config for connections
- * @param {*} env
- * @returns
- */
-function getConnectionToCw() {
-  try {
-    const dbUser = USER;
-    const dbPassword = PASS;
-    //const dbHost = HOST;
-     const dbHost = "omni-dw-prod.cnimhrgrtodg.us-east-1.redshift.amazonaws.com";
-    const dbPort = PORT;
-    const dbName = CW_DBNAME;
-
-    const connectionString = `postgres://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`;
-    console.log("connectionString", connectionString);
-    return connectionString;
-  } catch (error) {
-    throw "DB Connection Error";
-  }
-}
 
 /**
  * fetch tac data from redshift
@@ -462,7 +418,7 @@ async function createCwCsvHawb(cwData) {
       Volume: e["volume"],
       "Volume Unit": e["volume unit"],
     }));
-    //console.log("formatedHawb",formatedHawb)
+  //console.log("formatedHawb",formatedHawb)
   const csvCwHawb = parse(formatedHawb, optsHawb);
   const filename = `cwhawb-${moment().format("YYYY-MM-DD")}.csv`;
   return { csvCwHawb, filenameCwHawb: filename };
@@ -610,7 +566,7 @@ async function createCsvMawb(data) {
       "total fuel surcharge": e["total fuel surcharge"],
       "total security surcharge": e["total security surcharge"],
     }));
-    // console.log("formatedMawb",formatedMawb)
+  // console.log("formatedMawb",formatedMawb)
   const csvMawb = parse(formatedMawb, optsMawb);
   const filename = `mawb-${moment().format("YYYY-MM-DD")}.csv`;
   return { csvMawb, filenameMawb: filename };
@@ -694,7 +650,7 @@ async function uploadFileToS3(csvData, filename, type = "other") {
       Body: csvData,
       ContentType: "application/octet-stream",
     };
-     console.log("params",params)
+    console.log("params", params)
     await S3.putObject(params).promise();
   } catch (error) {
     console.log("error", error);
