@@ -17,6 +17,9 @@ async function cwQuery() {
     coalesce(fuelcst.total_fuel_cost,0) as "Total Fuel Surcharge",
     coalesce(seccst.total_security_cost,0) as "Total Security Surcharge"
     from
+    (select main2.* from (select main1.*,
+    row_number() over(partition by mawb , FILE_NBR order by atd desc)rank1
+    from
     (SELECT distinct
     jh.jh_pk,jh.jh_gc,
     JK_MasterBillNum mawb,
@@ -68,6 +71,9 @@ async function cwQuery() {
     where
     JW_TransportMode = 'AIR'
     and cast(js_systemcreatetimeutc as date) >= '2018-01-01'
+    )main1
+    )main2
+    where rank1 =1
     )main
     left outer join
     (
