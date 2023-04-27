@@ -42,6 +42,7 @@ provider:
     REGION: ${self:custom.region}
     STAGE: ${opt:stage, 'dev'}
     DBNAME: ${ssm:/omni-tac-index/${self:provider.stage}/db/name}
+    CW_DBNAME: ${ssm:/omni-tac-index/${self:provider.stage}/cw_db/name}
     USER: ${ssm:/omni-dw/${self:provider.stage}/db/user~true}
     HOST: ${ssm:/omni-dw/${self:provider.stage}/db/host~true}
     PASS: ${ssm:/omni-dw/${self:provider.stage}/db/password~true}

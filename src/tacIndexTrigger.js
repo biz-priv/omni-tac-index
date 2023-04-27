@@ -60,6 +60,10 @@ module.exports.handler = async (event, context, callback) => {
             value: process.env.DBNAME,
           },
           {
+            name: "CW_DBNAME",
+            value: process.env.CW_DBNAME,
+          },
+          {
             name: "REGION",
             value: process.env.REGION,
           },
