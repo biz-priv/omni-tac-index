@@ -2,6 +2,7 @@ async function cwQuery() {
     const cw_Query = `select final.* from
     (select distinct
        main.mawb,
+       main.js_housebill hawb,
        main.ATD as "Date",
        main.origin,
        main.destination,

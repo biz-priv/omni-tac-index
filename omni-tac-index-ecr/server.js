@@ -217,7 +217,7 @@ async function createCwCsvHawb(cwData) {
     .map((e) => ({
       "HAWB Number": e["hawb"],
       "MAWB Number": e["mawb"],
-      Date: moment(e["actual dept date"]).format("YYYY-MM-DD"),
+      Date: moment(e["date"]).format("YYYY-MM-DD"),
       Origin: e["origin"],
       Destination: e["destination"],
       "Flight Number": e["flight number"],
@@ -259,21 +259,21 @@ async function createCwCsvMawb(cwData) {
   const formatedMawb = cwData
     .filter((e) => e.mawb.length > 0)
     .map((e) => ({
-      mawb: e["mawb"],
-      date: moment(e["actual dept date"]).format("YYYY-MM-DD"),
-      origin: e["origin"],
-      destination: e["destination"],
-      "flight number": e["flight number"],
-      "actual weight": e["actual weight"],
-      "chargeable weight": e["chargeable weight"],
-      "weight unit": e["weight unit"],
-      volume: e["volume"],
-      "volume unit": e["volume unit"],
-      currency: e["currency"],
-      airline_rate: e["airline_rate"],
-      "total cost to airline": e["total cost to airline"],
-      "total fuel surcharge": e["total fuel surcharge"],
-      "total security surcharge": e["total security surcharge"],
+      "MAWB Number": e["mawb"],
+      Date: moment(e["date"]).format("YYYY-MM-DD"),
+      Origin: e["origin"],
+      Destination: e["destination"],
+      "Flight Number": e["flight number"],
+      "Actual Weight": e["actual weight"],
+      "Chargeable Weight": e["chargeable weight"],
+      "Weight Unit": e["weight unit"],
+      Volume: e["volume"],
+      "Volume Unit": e["volume unit"],
+      Currency: e["currency"],
+      "Airlines Rate": e["airline_rate"],
+      "Total Cost to Airline": e["total cost to airline"],
+      "Total Fuel Surcharge": e["total fuel surcharge"],
+      "Total Security Surcharge": e["total security surcharge"],
     }));
   const csvCwMawb = parse(formatedMawb, optsMawb);
   const filename = `cwmawb-${moment().format("YYYY-MM-DD")}.csv`;

@@ -136,7 +136,7 @@ async function createCwCsvHawb(cwData) {
     .map((e) => ({
       "HAWB Number": e["hawb"],
       "MAWB Number": e["mawb"],
-      Date: moment(e["actual dept date"]).format("YYYY-MM-DD"),
+      Date: moment(e["date"]).format("YYYY-MM-DD"),
       Origin: e["origin"],
       Destination: e["destination"],
       "Flight Number": e["flight number"],
@@ -182,7 +182,7 @@ async function createCwCsvMawb(cwData) {
     .filter((e) => e.mawb.length > 0)
     .map((e) => ({
       mawb: e["mawb"],
-      date: moment(e["actual dept date"]).format("YYYY-MM-DD"),
+      date: moment(e["date"]).format("YYYY-MM-DD"),
       origin: e["origin"],
       destination: e["destination"],
       "flight number": e["flight number"],
