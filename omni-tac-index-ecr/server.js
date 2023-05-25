@@ -178,7 +178,9 @@ async function createCsvMawb(data) {
  */
 async function getTacDataFromCW() {
   try {
-    const query = await cwQuery();
+    const pickDataFrom =
+      isFullLoad === "true" ? " 2018-01-01 " : " current_date - 45 ";
+    const query = await cwQuery(pickDataFrom);
     console.log("query", query);
     const result = await connections.query(query);
     if (!result || result.length == 0) {
