@@ -30,14 +30,14 @@ async function listBucketJsonFiles() {
     const wt_dbName = DBNAME;
     connections = dbc(getConnection(wt_dbName));
 
-    const data = await getTacData();
-    console.log("DB data", data.length);
+    // const data = await getTacData();
+    // console.log("DB data", data.length);
 
-    const { csvMawb, filenameMawb } = await createCsvMawb(data);
-    await updateDataToTac(csvMawb, filenameMawb, "mawb");
+    // const { csvMawb, filenameMawb } = await createCsvMawb(data);
+    // await updateDataToTac(csvMawb, filenameMawb, "mawb");
 
-    const { csvHawb, filenameHawb } = await createCsvHawb(data);
-    await updateDataToTac(csvHawb, filenameHawb, "hawb");
+    // const { csvHawb, filenameHawb } = await createCsvHawb(data);
+    // await updateDataToTac(csvHawb, filenameHawb, "hawb");
 
     const cw_dbName = CW_DBNAME;
     connections = dbc(getConnection(cw_dbName));
@@ -48,8 +48,8 @@ async function listBucketJsonFiles() {
     const { csvCwMawb, filenameCwMawb } = await createCwCsvMawb(cwData);
     await updateDataToTac(csvCwMawb, filenameCwMawb, "cwmawb");
 
-    const { csvCwHawb, filenameCwHawb } = await createCwCsvHawb(cwData);
-    await updateDataToTac(csvCwHawb, filenameCwHawb, "cwhawb");
+    // const { csvCwHawb, filenameCwHawb } = await createCwCsvHawb(cwData);
+    // await updateDataToTac(csvCwHawb, filenameCwHawb, "cwhawb");
 
     return true;
   } catch (error) {
@@ -270,8 +270,8 @@ async function createCwCsvMawb(cwData) {
       Volume: e["volume"],
       "Volume Unit": e["volume unit"],
       Currency: e["currency"],
-      "Airlines Rate": e["airline_rate"],
-      "Total Cost to Airline": e["total cost to airline"],
+      "Airlines Rate": e["airlines rate"],
+      "Total Cost to Carrier": e["total cost to carrier"],
       "Total Fuel Surcharge": e["total fuel surcharge"],
       "Total Security Surcharge": e["total security surcharge"],
     }));

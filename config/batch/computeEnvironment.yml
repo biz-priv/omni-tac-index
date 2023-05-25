@@ -25,5 +25,5 @@ OmniTacIndexComputeEnvironment:
       Type: FARGATE
       Subnets:
         - ${ssm:/omni-dw/${self:provider.stage}/lambda/subnetA}
-        - ${ssm:/omni-dw/${self:provider.stage}/lambda/subnetB}
+        # - ${ssm:/omni-dw/${self:provider.stage}/lambda/subnetB}
     State: ENABLED
