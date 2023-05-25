@@ -14,9 +14,7 @@ const {
 function getConnection(dbName) {
     try {
         const dbUser = USER;
-        // const dbUser = "bceuser1";
         const dbPassword = PASS;
-        // const dbPassword = "BizCloudExp1";
         const dbHost = HOST;
         const dbPort = PORT;
 
