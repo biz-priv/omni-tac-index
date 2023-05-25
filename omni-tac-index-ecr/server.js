@@ -30,14 +30,14 @@ async function listBucketJsonFiles() {
     const wt_dbName = DBNAME;
     connections = dbc(getConnection(wt_dbName));
 
-    // const data = await getTacData();
-    // console.log("DB data", data.length);
+    const data = await getTacData();
+    console.log("DB data", data.length);
 
-    // const { csvMawb, filenameMawb } = await createCsvMawb(data);
-    // await updateDataToTac(csvMawb, filenameMawb, "mawb");
+    const { csvMawb, filenameMawb } = await createCsvMawb(data);
+    await updateDataToTac(csvMawb, filenameMawb, "mawb");
 
-    // const { csvHawb, filenameHawb } = await createCsvHawb(data);
-    // await updateDataToTac(csvHawb, filenameHawb, "hawb");
+    const { csvHawb, filenameHawb } = await createCsvHawb(data);
+    await updateDataToTac(csvHawb, filenameHawb, "hawb");
 
     const cw_dbName = CW_DBNAME;
     connections = dbc(getConnection(cw_dbName));
