@@ -1,4 +1,4 @@
-async function cwQuery() {
+async function cwQuery(date) {
     const cw_Query = `select
     distinct main.mawb,
     cast(atd.atd as date) as "Date",
@@ -117,7 +117,7 @@ async function cwQuery() {
                 coalesce(jk_masterbillnum, '') <> ''
                 or coalesce(jk_masterbillnum, '') <> ''
             )
-            and cast(js_systemcreatetimeutc as date) >= '2018-01-01'
+            and cast(js_systemcreatetimeutc as date) >= '${date}'
             and jk_iscancelled = 0
             and length(JK_MasterBillNum) > 10
     ) main
