@@ -16,6 +16,7 @@ function getConnection(dbName) {
         const dbUser = USER;
         const dbPassword = PASS;
         const dbHost = HOST;
+        //const dbHost = "omni-dw-prod.cnimhrgrtodg.us-east-1.redshift.amazonaws.com"
         const dbPort = PORT;
 
         const connectionString = `postgres://${dbUser}:${encodeURIComponent(dbPassword)}@${dbHost}:${dbPort}/${dbName}`;

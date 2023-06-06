@@ -117,7 +117,7 @@ async function cwQuery(date) {
                 coalesce(jk_masterbillnum, '') <> ''
                 or coalesce(jk_masterbillnum, '') <> ''
             )
-            and cast(js_systemcreatetimeutc as date) >= '${date}'
+            and cast(js_systemcreatetimeutc as date) >= ${date}
             and jk_iscancelled = 0
             and length(JK_MasterBillNum) > 10
     ) main
