@@ -26,7 +26,9 @@
     "pg-promise": "^10.11.1"
   },
   "devDependencies": {
+    "lodash": "^4.17.21",
     "serverless": "2.72.3",
-    "serverless-offline": "^8.8.0"
+    "serverless-offline": "^8.8.0",
+    "serverless-plugin-existing-s3": "^2.4.0"
   }
 }

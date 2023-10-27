@@ -30,6 +30,17 @@ provider:
         - "batch:List*"
         - "batch:SubmitJob"
       Resource: "*"
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:ListBucket
+        - s3:PutObject
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:GetItem
+        - dynamodb:Query
+        - dynamodb:DeleteItem
+      Resource: "*"
   # timeout: 30
   # vpc:
   #   securityGroupIds:
@@ -66,6 +77,7 @@ custom:
 
 plugins:
   - serverless-offline
+  - serverless-plugin-existing-s3
 
 package:
   individually: true
@@ -77,10 +89,13 @@ layers:
     description: Omni Tac Index lambda layer for all node modules - ${self:provider.stage}
     compatibleRuntimes:
       - nodejs14.x
+      - nodejs18.x
     retain: false
 
 functions:
   tacIndexTrigger: ${file(config/functions/tacIndexTrigger.yml):function}
+  tacHAWBOutputFileHandler: ${file(config/functions/tacHAWBOutputFileHandler.yml):function}
+  tacEventProcessor: ${file(config/functions/tacEventProcessor.yml):function}
   # tacIndexTriggerTest: ${file(config/functions/tacIndexTriggerTest.yml):function} #for testing
 
 resources:
