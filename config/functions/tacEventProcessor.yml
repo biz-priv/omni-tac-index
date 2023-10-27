@@ -12,9 +12,16 @@ function:
             - "src/tacEventProcessor.js"
     events:
         - existingS3:
-            bucket: stage-cw-tables
+            bucket: ${ssm:/omni-tac-index/${self:provider.stage}/event-processor/bucket-name}
             events: 
                 - s3:ObjectCreated:*
             rules:
                 - suffix: jobconsol.csv
+                - prefix: cw-csv
+        - existingS3:
+            bucket: ${ssm:/omni-tac-index/${self:provider.stage}/event-processor/bucket-name}
+            events: 
+                - s3:ObjectCreated:*
+            rules:
+                - suffix: JobShipment.csv
                 - prefix: cw-csv
