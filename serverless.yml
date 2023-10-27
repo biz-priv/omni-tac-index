@@ -96,6 +96,7 @@ functions:
   tacIndexTrigger: ${file(config/functions/tacIndexTrigger.yml):function}
   tacHAWBOutputFileHandler: ${file(config/functions/tacHAWBOutputFileHandler.yml):function}
   tacEventProcessor: ${file(config/functions/tacEventProcessor.yml):function}
+  tacHAWBOutputScheduler: ${file(config/functions/tacHAWBOutputScheduler.yml):function}
   # tacIndexTriggerTest: ${file(config/functions/tacIndexTriggerTest.yml):function} #for testing
 
 resources:

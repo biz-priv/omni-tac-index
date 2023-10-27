@@ -1,6 +1,6 @@
 ---
 function:
-    name: omni-tac-event-processor-${self:provider.stage}
+    name: omni-tac-hawb-output-scheduler-${self:provider.stage}
     handler: src/tacHAWBOutputScheduler.handler
     timeout: 
     runtime: nodejs14.x
