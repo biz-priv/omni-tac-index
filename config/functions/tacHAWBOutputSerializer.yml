@@ -1,0 +1,16 @@
+---
+function:
+    name: omni-tac-hawb-output-serializer-${self:provider.stage}
+    handler: src/tacHAWBOutputSerializer.handler
+    timeout: 
+    runtime: nodejs14.x
+    layers:
+        - { Ref: OmniTacIndexLayerLambdaLayer }
+    package:
+        patterns:
+            - "!**/*"
+            - "src/tacHAWBOutputSerializer.js"
+    events:
+        - stream: ${ssm:/omni-tac-index/${self:provider.stage}/event-table-stream-arn}
+    environment:
+        SERIALIZER_QUEUE: ${ssm:/omni-tac-index/${self:provider.stage}/hawb-output-serializer-fifo-queue-url}
