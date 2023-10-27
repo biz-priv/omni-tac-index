@@ -30,3 +30,10 @@ resource "aws_ssm_parameter" "omni_tac_hawb_output_serializer_fifo_queue_url" {
   type        = "String"
   value       = aws_sqs_queue.omni_tac_hawb_output_serializer_fifo_queue.url
 }
+
+resource "aws_ssm_parameter" "omni_tac_hawb_output_serializer_fifo_queue_arn" {
+  name        = "/omni-tac-index/${var.env}/hawb-output-serializer-fifo-queue-arn"
+  description = "ARN of the hawb output serializer fifo queue"
+  type        = "String"
+  value       = aws_sqs_queue.omni_tac_hawb_output_serializer_fifo_queue.arn
+}
