@@ -1,0 +1,20 @@
+---
+function:
+    name: omni-tac-event-processor-${self:provider.stage}
+    handler: src/tacEventProcessor.handler
+    timeout: 
+    runtime: nodejs14.x
+    layers:
+        - { Ref: OmniTacIndexLayerLambdaLayer }
+    package:
+        patterns:
+            - "!**/*"
+            - "src/tacEventProcessor.js"
+    events:
+        - existingS3:
+            bucket: stage-cw-tables
+            events: 
+                - s3:ObjectCreated:*
+            rules:
+                - suffix: jobconsol.csv
+                - prefix: cw-csv
