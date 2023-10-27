@@ -3,6 +3,7 @@ resource "aws_sqs_queue" "omni_tac_hawb_output_serializer_fifo_queue" {
     fifo_queue                  = true
     content_based_deduplication = true
 
+    visibility_timeout_seconds = 500
     # Specify the SQS queue attributes
     redrive_policy = jsonencode({
         deadLetterTargetArn = aws_sqs_queue.omni_tac_hawb_output_serializer_dead_letter_queue.arn
