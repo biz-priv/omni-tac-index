@@ -1,0 +1,14 @@
+---
+function:
+    name: omni-tac-event-processor-${self:provider.stage}
+    handler: src/tacHAWBOutputScheduler.handler
+    timeout: 
+    runtime: nodejs14.x
+    layers:
+        - { Ref: OmniTacIndexLayerLambdaLayer }
+    package:
+        patterns:
+            - "!**/*"
+            - "src/tacHAWBOutputScheduler.js"
+    events:
+        - schedule: cron(0 8 ? * MON,THU *) #Triggers on Monday and Thursday each week at 8am
