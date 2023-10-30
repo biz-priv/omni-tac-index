@@ -12,7 +12,7 @@ function:
             - "src/tacEventProcessor.js"
             - "src/shared/*"
     environment:
-        EVENT_TABLE: ${ssm:/omni-tac-index/${self:provider.stage}/event-table-stream-arn}
+        EVENT_TABLE: ${ssm:/omni-tac-index/${self:provider.stage}/event-table-name}
     events:
         - existingS3:
                 bucket: ${ssm:/omni-tac-index/${self:provider.stage}/event-processor/bucket-name}

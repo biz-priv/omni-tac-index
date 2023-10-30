@@ -31,11 +31,11 @@ async function processRecord(record) {
     const data = getObjectFromCsv(file, header);
     await Promise.all(
         data.map(async (row) => {
-            finalRowData = {
+            let finalRowData = {
                 ...row,
                 pKey: get(row, "jk_pk", v4()),
                 sKey: get(row, "jk_masterbillnum", "000"),
-                status: 'PENDING'
+                status: 'PENDING',
                 lastUpdatedBy: functionName,
                 lastUpdatedTime: getDateTime(),
             };

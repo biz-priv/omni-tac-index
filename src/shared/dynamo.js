@@ -80,34 +80,10 @@ async function Get(params) {
 }
 
 async function updateItem(params) {
-    let params;
     try {
         return await db.update(params).promise();
     } catch (e) {
         console.error("Update Item Error: ", e, "\nUpdate params: ", params);
-        throw e;
-    }
-}
-
-async function checkAndUpdateDynamo(tableName, key, item) {
-    try {
-        let params = {
-            TableName: tableName,
-            Key: key,
-        };
-        const response = await Get(params);
-        if (get(response, "Item", null)) {
-            await updateItem(tableName, key, item);
-        } else {
-            await putItem(tableName, item);
-        }
-    } catch (e) {
-        console.error(
-            "CheckAndUpdateDynamoError: ",
-            e,
-            "\nCheckAndUpdateDynamoParam: ",
-            params
-        );
         throw e;
     }
 }
@@ -163,4 +139,5 @@ module.exports = {
     checkAndUpdateDynamo,
     deleteItem,
     batchWriteItems,
+    updateItem,
 };
