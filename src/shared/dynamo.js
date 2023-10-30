@@ -31,22 +31,6 @@ async function dbRead(params) {
     return { Items: readData };
 }
 
-async function FilterQuery(params) {
-    try {
-        const data = await dbRead(params);
-        return data.Items;
-    } catch (e) {
-        console.error(
-            "DynamoDb query error. ",
-            " Params: ",
-            params,
-            " Error: ",
-            e
-        );
-        throw e;
-    }
-}
-
 async function Put(params) {
     try {
         const data = await db.put(params).promise();
@@ -95,32 +79,9 @@ async function Get(params) {
     }
 }
 
-async function putItem(tableName, item) {
+async function updateItem(params) {
     let params;
     try {
-        params = {
-            TableName: tableName,
-            Item: item,
-        };
-        return await db.put(params).promise();
-    } catch (e) {
-        console.error("Put Item Error: ", e, "\nPut params: ", params);
-        throw e;
-    }
-}
-
-async function updateItem(tableName, key, item) {
-    let params;
-    try {
-        const [expression, expressionAtts, expressionName] =
-            await getUpdateExpressions(item, key);
-        const params = {
-            TableName: tableName,
-            Key: key,
-            UpdateExpression: expression,
-            ExpressionAttributeValues: expressionAtts,
-            ExpressionAttributeNames: expressionName,
-        };
         return await db.update(params).promise();
     } catch (e) {
         console.error("Update Item Error: ", e, "\nUpdate params: ", params);

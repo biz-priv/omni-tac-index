@@ -1,0 +1,38 @@
+{
+    "Records": [
+        {
+            "eventVersion": "2.1",
+            "eventSource": "aws:s3",
+            "awsRegion": "us-east-1",
+            "eventTime": "2023-10-30T08:17:24.671Z",
+            "eventName": "ObjectCreated:Put",
+            "userIdentity": {
+                "principalId": "AWS:AIDAU2XMJTS26DOEQ5VZ5"
+            },
+            "requestParameters": {
+                "sourceIPAddress": "10.9.110.134"
+            },
+            "responseElements": {
+                "x-amz-request-id": "4QNRNG4N197Z24S0",
+                "x-amz-id-2": "gCaZyhgCqC1yglRirvfxl4cluhYlmpAnlRMgp3r22EgUrdxWp24AdVz3q+RG8ZkP9dXWEApN+MBQn2JtDJgdnn/5bqgMH524"
+            },
+            "s3": {
+                "s3SchemaVersion": "1.0",
+                "configurationId": "exS3-v2--2a796ab84fc1d6fd75c2bab6ddb2f1ee",
+                "bucket": {
+                    "name": "stage-cw-tables",
+                    "ownerIdentity": {
+                        "principalId": "A1XXL94P42XULF"
+                    },
+                    "arn": "arn:aws:s3:::stage-cw-tables"
+                },
+                "object": {
+                    "key": "cw-csv/jobconsol.csv",
+                    "size": 102674,
+                    "eTag": "088b205540ab7e3280372e691b22bbf4",
+                    "sequencer": "00653F6694842D8F36"
+                }
+            }
+        }
+    ]
+}

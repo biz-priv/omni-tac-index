@@ -1,0 +1,38 @@
+{
+    "Records": [
+        {
+            "eventVersion": "2.1",
+            "eventSource": "aws:s3",
+            "awsRegion": "us-east-1",
+            "eventTime": "2023-10-30T08:21:07.765Z",
+            "eventName": "ObjectCreated:Put",
+            "userIdentity": {
+                "principalId": "AWS:AIDAU2XMJTS26DOEQ5VZ5"
+            },
+            "requestParameters": {
+                "sourceIPAddress": "10.9.110.134"
+            },
+            "responseElements": {
+                "x-amz-request-id": "QXCX6YWFF5TH1KH2",
+                "x-amz-id-2": "YJTZLTZs/VS8ZHioUy2NK5KJHbJ8koGZV6n/9+RvJg6uhja7GMZt80lYd9MkSAoiOKyJmyV3Jmuv3zU7d7kKSbKoWrShCVJ4QaWYONi7w74="
+            },
+            "s3": {
+                "s3SchemaVersion": "1.0",
+                "configurationId": "exS3-v2--b09712c8b66a6c0b5965bfec2417514e",
+                "bucket": {
+                    "name": "stage-cw-tables",
+                    "ownerIdentity": {
+                        "principalId": "A1XXL94P42XULF"
+                    },
+                    "arn": "arn:aws:s3:::stage-cw-tables"
+                },
+                "object": {
+                    "key": "cw-csv/JobShipment.csv",
+                    "size": 1337578,
+                    "eTag": "535e01ad34552908ae6228164233ae40",
+                    "sequencer": "00653F6773881D8D96"
+                }
+            }
+        }
+    ]
+}

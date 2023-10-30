@@ -1,6 +1,6 @@
 const AWS = require("aws-sdk");
-const s3 = new AWS.S3();
-const errorHandler = require("./errorHandler");
+const { get } = require("lodash");
+const s3 = new AWS.S3({ region: process.env.REGION });
 
 /**
  * The function puts a JSON object into an AWS S3 bucket.
@@ -20,7 +20,7 @@ async function putObject(data, fileName, bucket, contentType) {
         await s3.putObject(s3Params).promise();
     } catch (e) {
         console.error("s3 put object error: ", e);
-        throw await errorHandler.handleError(1031);
+        throw e;
     }
 }
 
@@ -40,12 +40,14 @@ async function getObject(bucket, key) {
             Key: key,
             ResponseContentType: "application/json",
         };
-
+        console.log(`🙂 -> file: s3.js:42 -> params:`, params);
         const s3File = await s3.getObject(params).promise();
-        return JSON.parse(s3File.Body.toString("utf-8").trim());
+        console.log(`🙂 -> file: s3.js:44 -> s3File:`, s3File);
+        // return s3File
+        return get(s3File, "Body", "").toString("utf-8").trim();
     } catch (e) {
         console.error("s3 get object error: ", e);
-        throw await errorHandler.handleError(1031);
+        throw await e;
     }
 }
 
@@ -69,7 +71,7 @@ async function getGzipObject(bucket, key) {
         return s3File.Body;
     } catch (e) {
         console.error("s3 get object error: ", e);
-        throw await errorHandler.handleError(1031);
+        throw e;
     }
 }
 
@@ -86,7 +88,7 @@ async function getListObjects(bucket) {
         return fileList.Contents;
     } catch (e) {
         console.error("s3 get list objects error: ", e);
-        throw await errorHandler.handleError(1031);
+        throw e;
     }
 }
 
@@ -116,7 +118,7 @@ async function moveObject(bucket, source, destination) {
             .promise();
     } catch (e) {
         console.error("s3 move object error: ", e);
-        throw await errorHandler.handleError(1031);
+        throw e;
     }
 }
 
@@ -147,7 +149,7 @@ async function moveRESAObject(bucket, source, destination) {
     } catch (e) {
         console.log({ bucket, source, destination, sourcePath });
         console.error("s3 move object error: ", e);
-        throw await errorHandler.handleError(1031);
+        throw e;
     }
 }
 
