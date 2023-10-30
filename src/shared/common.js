@@ -1,13 +1,3 @@
-module.exports.Headers = {
-    jobConsoleHeader,
-    jobShipmentHeader,
-};
-
-module.exports.Files = {
-    jobConsole: "cw-csv/jobconsol.csv",
-    jobShipment: "cw-csv/JobShipment.csv",
-};
-
 const jobConsoleHeader = [
     "jk_pk",
     "jk_consolstatus",
@@ -119,3 +109,17 @@ const jobShipmentHeader = [
     "js_insurancevalue",
     "js_rx_nkinsurancecurrency",
 ];
+
+module.exports.Headers = {
+    jobConsoleHeader,
+    jobShipmentHeader,
+};
+
+module.exports.Files = {
+    jobConsole: "cw-csv/jobconsol.csv",
+    jobShipment: "cw-csv/JobShipment.csv",
+};
+
+module.exports.getDateTime = (date = new Date()) => {
+    return moment(date).format("YYYY-MM-DD HH:mm:ss");
+};

@@ -23,7 +23,8 @@
     "form-data": "^4.0.0",
     "json2csv": "^5.0.7",
     "moment": "^2.29.3",
-    "pg-promise": "^10.11.1"
+    "pg-promise": "^10.11.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "lodash": "^4.17.21",

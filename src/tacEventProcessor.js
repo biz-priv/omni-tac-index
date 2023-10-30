@@ -1,15 +1,12 @@
 const { get } = require("lodash");
 const { getObject } = require("./shared/s3");
-const { Headers, Files } = require("./shared/common");
+const { Headers, Files, getDateTime } = require("./shared/common");
+const { Put } = require("./shared/dynamo");
+const { v4 } = require("uuid");
+
+let functionName;
 module.exports.handler = async (event, context) => {
-    console.log(
-        `🙂 -> file: tacEventProcessor.js:3 -> context:`,
-        JSON.stringify(context)
-    );
-    console.log(
-        `🙂 -> file: tacEventProcessor.js:3 -> event:`,
-        JSON.stringify(event)
-    );
+    functionName = get(context, "functionName");
     const Record = get(event, "Records", []);
     await Promise.all(
         Record.map(async (record) => {
@@ -22,14 +19,7 @@ async function processRecord(record) {
     console.log("record: ", record);
 
     const bucketName = get(record, "s3.bucket.name");
-    console.log(
-        `🙂 -> file: tacEventProcessor.js:22 -> bucketName:`,
-        bucketName
-    );
-
     const key = get(record, "s3.object.key");
-    console.log(`🙂 -> file: tacEventProcessor.js:24 -> key:`, key);
-
     let header;
     if (key === Files.jobConsole) {
         header = Headers.jobConsoleHeader;
@@ -38,9 +28,20 @@ async function processRecord(record) {
         header = Headers.jobShipmentHeader;
     }
     const file = await getFileFromS3(bucketName, key);
-    console.log(`🙂 -> file: tacEventProcessor.js:33 -> file:`, file);
     const data = getObjectFromCsv(file, header);
-    console.log(`🙂 -> file: tacEventProcessor.js:35 -> data:`, data);
+    await Promise.all(
+        data.map(async (row) => {
+            finalRowData = {
+                ...row,
+                pKey: get(row, "jk_pk", v4()),
+                sKey: get(row, "jk_masterbillnum", "000"),
+                status: 'PENDING'
+                lastUpdatedBy: functionName,
+                lastUpdatedTime: getDateTime(),
+            };
+            await insertRecordIntoDynamoDb(finalRowData);
+        })
+    );
 }
 
 async function getFileFromS3(bucketName, key) {
@@ -57,9 +58,17 @@ function getObjectFromCsv(csvString, headers) {
         const values = rows[i].split(",");
         const obj = {};
         for (let j = 0; j < headers.length; j++) {
-            obj[headers[j]] = values[j];
+            obj[headers[j]] = values[j].replace(/\s+/g, "");
         }
         results.push(obj);
     }
     return results;
+}
+
+async function insertRecordIntoDynamoDb(data) {
+    const params = {
+        TableName: process.env.EVENT_TABLE,
+        Item: data,
+    };
+    return await Put(params);
 }
