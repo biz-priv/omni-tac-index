@@ -10,7 +10,7 @@ function:
     patterns:
       - "!**/*"
       - "src/tacHAWBOutputFileHandler.js"
-      - "shared/**"
+      - "shared/*"
   events:
     - sqs:
           arn: ${ssm:/omni-tac-index/${self:provider.stage}/hawb-output-serializer-fifo-queue-arn}

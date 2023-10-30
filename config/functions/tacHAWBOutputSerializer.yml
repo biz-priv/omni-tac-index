@@ -10,7 +10,7 @@ function:
         patterns:
             - "!**/*"
             - "src/tacHAWBOutputSerializer.js"
-            - "shared/**"
+            - "shared/*"
     events:
         - stream: ${ssm:/omni-tac-index/${self:provider.stage}/event-table-stream-arn}
     environment:
