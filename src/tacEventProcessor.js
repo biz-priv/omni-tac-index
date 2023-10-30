@@ -34,8 +34,8 @@ async function processRecord(record) {
             let finalRowData = {
                 ...row,
                 pKey: get(row, "jk_pk", v4()),
-                sKey: get(row, "jk_masterbillnum", "000"),
-                status: 'PENDING',
+                sKey: getDateTime(),
+                status: "PENDING",
                 lastUpdatedBy: functionName,
                 lastUpdatedTime: getDateTime(),
             };
