@@ -10,7 +10,7 @@ function:
         patterns:
             - "!**/*"
             - "src/tacEventProcessor.js"
-            - "shared/*"
+            - "src/shared/*"
     events:
         - existingS3:
             bucket: ${ssm:/omni-tac-index/${self:provider.stage}/event-processor/bucket-name}

@@ -10,6 +10,6 @@ function:
         patterns:
             - "!**/*"
             - "src/tacHAWBOutputScheduler.js"
-            - "shared/*"
+            - "src/shared/*"
     events:
         - schedule: cron(0 8 ? * MON,THU *) #Triggers on Monday and Thursday each week at 8am
