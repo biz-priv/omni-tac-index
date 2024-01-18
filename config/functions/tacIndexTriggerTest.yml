@@ -12,9 +12,6 @@ function:
       - ${ssm:/omni-default/${self:provider.stage}/subnetB}
   layers:
     - { Ref: OmniTacIndexLayerLambdaLayer }
-  environment:
-    SNS_TOPIC_ARN: ${ssm:/omni-reports/${self:provider.stage}/error-notification/sns/arn}
-	  REGION: ${self:provider.region}
   package:
     patterns:
       - "!**/*"
