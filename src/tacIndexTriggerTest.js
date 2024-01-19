@@ -23,7 +23,7 @@ const {
   CW_DBNAME
 } = process.env;
 
-module.exports.handler = async (event, context, callback) => {
+module.exports.handler = async (event, callback) => {
   try {
     const wt_dbName = DBNAME;
     connections = dbc(getConnection(wt_dbName));

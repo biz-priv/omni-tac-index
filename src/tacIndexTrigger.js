@@ -2,6 +2,8 @@
 const AWS = require("aws-sdk");
 const batch = new AWS.Batch({ apiVersion: "2016-08-10" });
 const STAGE = process.env.STAGE;
+const {SNS_TOPIC_ARN } = process.env;
+const sns = new AWS.SNS({ region: process.env.REGION });
 
 module.exports.handler = async (event, context, callback) => {
   try {
@@ -90,6 +92,11 @@ module.exports.handler = async (event, context, callback) => {
     return callback(null, response);
   } catch (error) {
     console.error("Error while processing data", error);
+    const params = {
+			Message: `Error in ${context.functionName}, Error: ${error.message}`,
+			TopicArn: SNS_TOPIC_ARN,
+		};
+    await sns.publish(params).promise();
 
     const response = {
       statusCode: 400,
