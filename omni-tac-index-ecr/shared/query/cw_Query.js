@@ -1,3 +1,10 @@
+/*
+* File: omni-tac-index-ecr\shared\query\cw_Query.js
+* Project: Omni-tac-index
+* Author: Bizcloud Experts
+* Date: 2023-05-26
+* Confidential and Proprietary
+*/
 async function cwQuery(date) {
     const cw_Query = `select
     distinct main.mawb,

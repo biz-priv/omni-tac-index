@@ -1,3 +1,10 @@
+/*
+* File: omni-tac-index-ecr\server.js
+* Project: Omni-tac-index
+* Author: Bizcloud Experts
+* Date: 2023-05-26
+* Confidential and Proprietary
+*/
 "use strict";
 const AWS = require("aws-sdk");
 const axios = require("axios");

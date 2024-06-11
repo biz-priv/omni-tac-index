@@ -1,3 +1,10 @@
+/*
+* File: omni-tac-index-ecr\shared\query\wt_Query.js
+* Project: Omni-tac-index
+* Author: Bizcloud Experts
+* Date: 2023-04-07
+* Confidential and Proprietary
+*/
 async function wtQuery(DB, pickDataFrom) {
     const cw_Query = `select 
         MAWB,

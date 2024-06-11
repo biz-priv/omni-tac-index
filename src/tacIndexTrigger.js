@@ -1,3 +1,10 @@
+/*
+* File: src\tacIndexTrigger.js
+* Project: Omni-tac-index
+* Author: Bizcloud Experts
+* Date: 2023-04-06
+* Confidential and Proprietary
+*/
 "use strict";
 const AWS = require("aws-sdk");
 const batch = new AWS.Batch({ apiVersion: "2016-08-10" });

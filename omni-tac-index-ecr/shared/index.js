@@ -1,3 +1,10 @@
+/*
+* File: omni-tac-index-ecr\shared\index.js
+* Project: Omni-tac-index
+* Author: Bizcloud Experts
+* Date: 2023-05-26
+* Confidential and Proprietary
+*/
 const {
     USER,
     PASS,

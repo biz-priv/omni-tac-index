@@ -1,3 +1,10 @@
+/*
+* File: src\tacIndexTriggerTest.js
+* Project: Omni-tac-index
+* Author: Bizcloud Experts
+* Date: 2023-05-19
+* Confidential and Proprietary
+*/
 const AWS = require("aws-sdk");
 const axios = require("axios");
 const pgp = require("pg-promise");
